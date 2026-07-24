@@ -1,0 +1,14 @@
+---
+# Wait until every targeted host accepts connections again. Useful after a reboot,
+# fresh provisioning, or a network change, before running other playbooks.
+# Usage:
+#   ansible-playbook Connectivity/wait-for-hosts.yml
+#   ansible-playbook Connectivity/wait-for-hosts.yml -e connect_timeout=600
+- name: Wait for hosts to become reachable
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Wait for the connection to come up
+      ansible.builtin.wait_for_connection:
+        timeout: "{{ connect_timeout | default(300) | int }}"
+        sleep: 5

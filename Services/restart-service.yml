@@ -1,0 +1,15 @@
+---
+# Restart a service. Requires -e name=. Because a restart is disruptive, scope the run
+# with --limit and preview it with --check first.
+# Usage:
+#   ansible-playbook Services/restart-service.yml -e name=nginx --limit web --check
+#   ansible-playbook Services/restart-service.yml -e name=nginx --limit web
+- name: Restart a service
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Restart the service
+      ansible.builtin.service:
+        name: "{{ name | mandatory }}"
+        state: restarted

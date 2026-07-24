@@ -1,0 +1,21 @@
+---
+# List installed packages and the total count per host, via package_facts (no shell,
+# read-only). Optionally filter by a substring or regex with -e filter=.
+# Usage:
+#   ansible-playbook Packages/list-installed.yml
+#   ansible-playbook Packages/list-installed.yml -e filter=python
+- name: List installed packages
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Collect package facts
+      ansible.builtin.package_facts:
+
+    - name: Show package count
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.packages | length }} packages installed"
+
+    - name: Show matching packages
+      ansible.builtin.debug:
+        msg: "{{ ansible_facts.packages.keys() | select('search', filter) | list }}"
+      when: filter is defined

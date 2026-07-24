@@ -1,0 +1,18 @@
+---
+# Show the remote user and its groups on each host. This is the playbook form of the
+# old ad-hoc command `ansible all -a 'id'`. Read-only.
+# Usage:
+#   ansible-playbook Users/show-remote-user.yml
+- name: Show the remote user
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Run id
+      ansible.builtin.command:
+        cmd: id -a
+      changed_when: false
+      register: id_output
+
+    - name: Display identity
+      ansible.builtin.debug:
+        msg: "{{ id_output.stdout }}"

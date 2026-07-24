@@ -1,0 +1,17 @@
+---
+# Report every mounted filesystem and its free space per host, from gathered facts.
+# Usage:
+#   ansible-playbook Facts/disk-usage.yml
+- name: Report disk usage
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Show mounts and free space
+      ansible.builtin.debug:
+        msg: >-
+          {{ item.mount }} on {{ item.device }}:
+          {{ (item.size_available / 1073741824) | round(1) }} GB free of
+          {{ (item.size_total / 1073741824) | round(1) }} GB
+      loop: "{{ ansible_facts.mounts | default([]) }}"
+      loop_control:
+        label: "{{ item.mount }}"

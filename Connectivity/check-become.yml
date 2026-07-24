@@ -1,0 +1,22 @@
+---
+# Confirm privilege escalation (become) works: escalate to root and assert the
+# effective user really is root. Fails loudly on any host where sudo is misconfigured.
+# Usage:
+#   ansible-playbook Connectivity/check-become.yml
+- name: Check privilege escalation
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Determine the escalated user
+      ansible.builtin.command:
+        cmd: id -un
+      changed_when: false
+      register: escalated_user
+
+    - name: Assert escalation reached root
+      ansible.builtin.assert:
+        that:
+          - escalated_user.stdout == "root"
+        success_msg: "Privilege escalation works (effective user: root)."
+        fail_msg: "Privilege escalation did not reach root (got: {{ escalated_user.stdout }})."

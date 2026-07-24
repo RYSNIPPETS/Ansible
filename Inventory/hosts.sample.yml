@@ -1,0 +1,38 @@
+---
+# Sample inventory. Copy this file, edit it for your environment, and pass it with
+# `-i your-hosts.yml`, or set it as `inventory` in ../ansible.cfg (the default).
+#
+# The `control` group uses a local connection, so the read-only playbooks in this
+# repository run out of the box with no remote hosts and no SSH:
+#   ansible-playbook Connectivity/ping.yml --limit control
+control:
+  hosts:
+    control-node:
+      ansible_connection: local
+
+centos:
+  hosts:
+    centos1:
+      ansible_port: 2222
+    centos2:
+    centos3:
+  vars:
+    ansible_user: root
+
+ubuntu:
+  hosts:
+    ubuntu1:
+    ubuntu2:
+    ubuntu3:
+  vars:
+    ansible_become: true
+    # Never commit a real password. Store it with ansible-vault instead, for example:
+    #   ansible-vault encrypt_string 's3cret' --name ansible_become_pass
+    # then reference the encrypted variable here:
+    # ansible_become_pass: "{{ vault_ansible_become_pass }}"
+
+linux:
+  children:
+    centos:
+    ubuntu:
+...

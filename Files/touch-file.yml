@@ -1,0 +1,16 @@
+---
+# Ensure a file exists on every targeted host. This is the playbook form of the old
+# ad-hoc command `ansible all -m file -a 'path=/tmp/test state=touch'`, with an
+# overridable path. Supports --check.
+# Usage:
+#   ansible-playbook Files/touch-file.yml
+#   ansible-playbook Files/touch-file.yml -e path=/tmp/example --check --diff
+- name: Touch a file on all hosts
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ensure the file exists
+      ansible.builtin.file:
+        path: "{{ path | default('/tmp/test') }}"
+        state: touch
+        mode: "0644"

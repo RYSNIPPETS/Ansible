@@ -1,0 +1,16 @@
+---
+# Install a package using the OS-appropriate manager (apt, dnf, yum, ...) via the
+# generic ansible.builtin.package module. Requires -e name=. Set state=latest to
+# upgrade. Supports --check.
+# Usage:
+#   ansible-playbook Packages/install-package.yml -e name=git
+#   ansible-playbook Packages/install-package.yml -e name=curl -e state=latest --check
+- name: Install a package
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Ensure the package is installed
+      ansible.builtin.package:
+        name: "{{ name | mandatory }}"
+        state: "{{ state | default('present') }}"

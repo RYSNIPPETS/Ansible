@@ -1,0 +1,24 @@
+---
+# Copy a local file to every targeted host, with a checksum-verified result.
+# Requires the `src` and `dest` extra variables. Escalates to write system paths.
+# Supports --check/--diff.
+# Usage:
+#   ansible-playbook Files/copy-file.yml -e src=./motd -e dest=/etc/motd
+#   ansible-playbook Files/copy-file.yml -e src=./app.conf -e dest=/etc/app.conf -e mode=0640
+- name: Copy a file to hosts
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Validate arguments
+      ansible.builtin.assert:
+        that:
+          - src is defined
+          - dest is defined
+        fail_msg: "Provide -e src=<local path> and -e dest=<remote path>."
+
+    - name: Copy the file
+      ansible.builtin.copy:
+        src: "{{ src }}"
+        dest: "{{ dest }}"
+        mode: "{{ mode | default('0644') }}"

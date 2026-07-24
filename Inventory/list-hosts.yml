@@ -1,0 +1,16 @@
+---
+# Print the inventory as Ansible sees it: every group and the hosts it contains.
+# Runs on the control node only, so it needs no connection to the managed hosts.
+# Usage:
+#   ansible-playbook Inventory/list-hosts.yml
+- name: List inventory hosts and groups
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Show groups and their hosts
+      ansible.builtin.debug:
+        msg: "{{ item }} -> {{ groups[item] | sort }}"
+      loop: "{{ groups.keys() | list }}"
+      loop_control:
+        label: "{{ item }}"

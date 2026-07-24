@@ -1,0 +1,15 @@
+---
+# Enable a service to start at boot and ensure it is running now. Requires -e name=.
+# Idempotent and --check safe.
+# Usage:
+#   ansible-playbook Services/enable-service.yml -e name=chronyd
+- name: Enable and start a service
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Enable and start the service
+      ansible.builtin.service:
+        name: "{{ name | mandatory }}"
+        enabled: true
+        state: started

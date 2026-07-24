@@ -1,0 +1,12 @@
+---
+# Verify Ansible can reach and authenticate to every targeted host.
+# This is the playbook form of the old ad-hoc command `ansible all -m ping -o`.
+# Usage:
+#   ansible-playbook Connectivity/ping.yml
+#   ansible-playbook Connectivity/ping.yml --limit control
+- name: Ping all hosts
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ping targets
+      ansible.builtin.ping:

@@ -1,0 +1,22 @@
+---
+# List local login accounts (UID 1000-65533) using getent, so it works without a shell
+# and stays read-only. Reserved system accounts and 'nobody' are filtered out.
+# Usage:
+#   ansible-playbook Users/list-users.yml
+- name: List local users
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Read the passwd database
+      ansible.builtin.getent:
+        database: passwd
+
+    - name: Show human login accounts
+      ansible.builtin.debug:
+        msg: "{{ item }} (uid {{ getent_passwd[item][1] }}, shell {{ getent_passwd[item][5] }})"
+      loop: "{{ getent_passwd.keys() | list }}"
+      when:
+        - getent_passwd[item][1] | int >= 1000
+        - getent_passwd[item][1] | int < 65534
+      loop_control:
+        label: "{{ item }}"

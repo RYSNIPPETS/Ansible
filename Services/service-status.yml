@@ -1,0 +1,28 @@
+---
+# Report service state using service_facts (no shell, read-only). With -e name= it
+# reports one service; without it, it lists every running service.
+# Usage:
+#   ansible-playbook Services/service-status.yml
+#   ansible-playbook Services/service-status.yml -e name=sshd
+- name: Report service status
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Collect service facts
+      ansible.builtin.service_facts:
+
+    - name: Show one service
+      ansible.builtin.debug:
+        msg: >-
+          {{ name }}:
+          {{ ansible_facts.services[name].state | default('not found') }}
+          ({{ ansible_facts.services[name].status | default('n/a') }})
+      when: name is defined
+
+    - name: Show all running services
+      ansible.builtin.debug:
+        msg: >-
+          {{ ansible_facts.services | dict2items
+             | selectattr('value.state', 'equalto', 'running')
+             | map(attribute='key') | list }}
+      when: name is not defined

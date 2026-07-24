@@ -1,0 +1,18 @@
+# Ansible
+*.retry
+
+# Vault / secrets — never commit these
+.vault_pass
+vault_pass.txt
+*.vault
+
+# Converter output example
+hosts.json
+
+# Python / OS noise
+__pycache__/
+*.pyc
+.DS_Store
+
+# Test directory
+tests/

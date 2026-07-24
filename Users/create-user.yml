@@ -1,0 +1,20 @@
+---
+# Create (or ensure the presence of) a login user. Requires -e username=. Optional
+# user_groups, shell, and state. Scope carefully with --limit and preview with --check.
+# (user_groups, not groups, because `groups` is a reserved Ansible magic variable.)
+# Usage:
+#   ansible-playbook Users/create-user.yml -e username=deploy
+#   ansible-playbook Users/create-user.yml -e username=deploy -e user_groups=sudo --check
+- name: Create a user
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Ensure the user exists
+      ansible.builtin.user:
+        name: "{{ username | mandatory }}"
+        groups: "{{ user_groups | default(omit) }}"
+        append: "{{ user_groups is defined }}"
+        shell: "{{ shell | default('/bin/bash') }}"
+        state: "{{ state | default('present') }}"
+        create_home: true

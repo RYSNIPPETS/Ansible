@@ -1,0 +1,19 @@
+---
+# Print one concise line of OS / kernel / architecture / CPU / memory per host,
+# built entirely from gathered facts (no shell commands).
+# Usage:
+#   ansible-playbook Facts/os-summary.yml
+- name: Summarize operating systems
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Show OS summary
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }}:
+          {{ ansible_facts.distribution }} {{ ansible_facts.distribution_version }}
+          ({{ ansible_facts.os_family }}),
+          kernel {{ ansible_facts.kernel }},
+          {{ ansible_facts.architecture }},
+          {{ ansible_facts.processor_vcpus | default('?') }} vCPU,
+          {{ ansible_facts.memtotal_mb | default(0) }} MB RAM

@@ -1,0 +1,18 @@
+---
+# Ensure a directory exists with a given owner, group, and mode. Idempotent and
+# --check safe. Owner and group default to leaving the existing values untouched.
+# Usage:
+#   ansible-playbook Files/manage-directory.yml -e path=/opt/app
+#   ansible-playbook Files/manage-directory.yml -e path=/opt/app -e owner=deploy -e mode=0750
+- name: Manage a directory
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Ensure the directory exists
+      ansible.builtin.file:
+        path: "{{ path | mandatory }}"
+        state: directory
+        owner: "{{ owner | default(omit) }}"
+        group: "{{ group | default(omit) }}"
+        mode: "{{ mode | default('0755') }}"

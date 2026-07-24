@@ -1,0 +1,18 @@
+---
+# Gather and display host facts. This is the modern replacement for the old ad-hoc
+# command `ansible <host> -m setup`. Show everything, or narrow with a fact-name glob.
+# Usage:
+#   ansible-playbook Facts/gather-facts.yml
+#   ansible-playbook Facts/gather-facts.yml -e filter='ansible_distribution*'
+- name: Gather host facts
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Collect facts
+      ansible.builtin.setup:
+        filter: "{{ filter | default('*') }}"
+      register: host_facts
+
+    - name: Show facts
+      ansible.builtin.debug:
+        var: host_facts.ansible_facts
