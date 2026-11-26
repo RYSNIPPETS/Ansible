@@ -12,20 +12,20 @@ own purpose, extra variables, and privilege requirements.
 
 | Location | Playbooks | What they cover |
 | --- | ---: | --- |
-| [`Connectivity/`](Connectivity/) | 3 | Reachability and preflight: ping, waiting for hosts after a reboot, and verifying privilege escalation. |
-| [`Facts/`](Facts/) | 3 | Gathering host facts, a one-line OS summary, and disk-usage reporting. |
-| [`Files/`](Files/) | 3 | Ensuring files exist, copying files to hosts, and managing directories. |
-| [`Users/`](Users/) | 3 | Showing the remote user, creating users, and listing local login accounts. |
-| [`Packages/`](Packages/) | 2 | Installing packages with the OS-appropriate manager and listing what is installed. |
-| [`Services/`](Services/) | 3 | Reporting service state, restarting a service, and enabling one at boot. |
-| [`Inventory/`](Inventory/) | 1 | Listing the inventory as Ansible sees it, plus a sample inventory and a YAML-to-JSON helper. |
+| [`Connectivity/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Connectivity/) | 3 | Reachability and preflight: ping, waiting for hosts after a reboot, and verifying privilege escalation. |
+| [`Facts/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Facts/) | 3 | Gathering host facts, a one-line OS summary, and disk-usage reporting. |
+| [`Files/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Files/) | 3 | Ensuring files exist, copying files to hosts, and managing directories. |
+| [`Users/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Users/) | 3 | Showing the remote user, creating users, and listing local login accounts. |
+| [`Packages/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Packages/) | 2 | Installing packages with the OS-appropriate manager and listing what is installed. |
+| [`Services/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Services/) | 3 | Reporting service state, restarting a service, and enabling one at boot. |
+| [`Inventory/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Inventory/) | 1 | Listing the inventory as Ansible sees it, plus a sample inventory and a YAML-to-JSON helper. |
 
 ### Repository organization
 
 Playbooks are grouped by administrative purpose. The repository root is reserved for
 documentation and repository-wide configuration: [`ansible.cfg`](ansible.cfg) holds the
 shared defaults (default inventory and YAML-formatted results), the sample inventory and
-the `convert-yaml-to-json.sh` helper live in [`Inventory/`](Inventory/), and validation
+the `convert-yaml-to-json.sh` helper live in [`Inventory/`](https://github.com/RYSNIPPETS/Ansible/tree/main/Inventory/), and validation
 lives in [`Tests/`](Tests/).
 
 Every playbook is self-documenting: its header comment states what it does, how to run
@@ -106,4 +106,4 @@ Do not commit passwords, SSH private keys, or other secrets to the repository. S
 sensitive values with
 [`ansible-vault`](https://docs.ansible.com/ansible/latest/vault_guide/index.html) and
 reference them as variables, as shown in
-[`Inventory/hosts.sample.yml`](Inventory/hosts.sample.yml).
+[`Inventory/hosts.sample.yml`](https://github.com/RYSNIPPETS/Ansible/blob/main/Inventory/hosts.sample.yml).
