@@ -34,11 +34,11 @@ it, and which extra variables (`-e key=value`) it accepts. All tasks use fully-q
 
 ## Requirements and compatibility
 
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/index.html)
-  (ansible-core 2.15 or newer)
-- A control node with Python 3 and SSH access to the managed hosts
-- Python 3 with [PyYAML](https://pyyaml.org/) for the inventory helper and the test
-  baseline
+- [ansible-core 2.22](https://docs.ansible.com/projects/ansible-core/2.22/), the
+  runtime included in Ansible 15
+- Python 3.13–3.15 on the control node and Python 3.9–3.15 on managed Linux hosts
+- SSH access to the managed hosts
+- [PyYAML](https://pyyaml.org/) for the inventory converter, installed with ansible-core
 - `sudo`/`become` configured on the managed hosts for the playbooks that change system
   state
 
@@ -55,11 +55,10 @@ Run the repository checks from its root:
 make check
 ```
 
-The validation always verifies that every YAML file is well-formed (via PyYAML) and that
-the shell scripts pass `bash -n`, are executable, and answer `--help`. When the full
-Ansible toolchain is installed, it additionally runs `ansible-playbook --syntax-check`,
-`yamllint`, `ansible-lint`, and `shellcheck`; each is skipped with a notice when its tool
-is not present.
+The checks validate the Ansible configuration and sample inventory and syntax-check
+every playbook. They also check shell syntax and verify that the inventory converter
+produces equivalent JSON from a file and from standard input. If installed,
+`yamllint`, `ansible-lint`, and `shellcheck` run as well.
 
 ## Getting started
 
@@ -68,6 +67,9 @@ Clone the repository:
 ```bash
 git clone https://github.com/RYSNIPPETS/Ansible.git
 cd Ansible
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install 'ansible-core==2.22.*'
 ```
 
 The bundled sample inventory includes a local `control` group, so a read-only playbook

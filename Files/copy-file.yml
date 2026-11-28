@@ -3,8 +3,8 @@
 # Requires the `src` and `dest` extra variables. Escalates to write system paths.
 # Supports --check/--diff.
 # Usage:
-#   ansible-playbook Files/copy-file.yml -e src=./motd -e dest=/etc/motd
-#   ansible-playbook Files/copy-file.yml -e src=./app.conf -e dest=/etc/app.conf -e mode=0640
+#   ansible-playbook Files/copy-file.yml -e src="$PWD/motd" -e dest=/etc/motd
+#   ansible-playbook Files/copy-file.yml -e src="$PWD/app.conf" -e dest=/etc/app.conf -e mode=0640
 - name: Copy a file to hosts
   hosts: all
   gather_facts: false

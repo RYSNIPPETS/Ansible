@@ -13,10 +13,10 @@
 
     - name: Show human login accounts
       ansible.builtin.debug:
-        msg: "{{ item }} (uid {{ getent_passwd[item][1] }}, shell {{ getent_passwd[item][5] }})"
-      loop: "{{ getent_passwd.keys() | list }}"
+        msg: "{{ item.key }} (uid {{ item.value[1] }}, shell {{ item.value[5] }})"
+      loop: "{{ ansible_facts.getent_passwd | ansible.builtin.dict2items }}"
       when:
-        - getent_passwd[item][1] | int >= 1000
-        - getent_passwd[item][1] | int < 65534
+        - item.value[1] | int >= 1000
+        - item.value[1] | int < 65534
       loop_control:
-        label: "{{ item }}"
+        label: "{{ item.key }}"

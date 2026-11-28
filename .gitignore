@@ -10,9 +10,7 @@ vault_pass.txt
 hosts.json
 
 # Python / OS noise
+.venv/
 __pycache__/
 *.pyc
 .DS_Store
-
-# Test directory
-tests/

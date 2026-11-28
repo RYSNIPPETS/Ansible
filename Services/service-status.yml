@@ -7,6 +7,8 @@
 - name: Report service status
   hosts: all
   gather_facts: false
+  vars:
+    service_inventory: "{{ ansible_facts.services | default({}) }}"
   tasks:
     - name: Collect service facts
       ansible.builtin.service_facts:
@@ -14,15 +16,17 @@
     - name: Show one service
       ansible.builtin.debug:
         msg: >-
-          {{ name }}:
-          {{ ansible_facts.services[name].state | default('not found') }}
-          ({{ ansible_facts.services[name].status | default('n/a') }})
+          {{ name }}: {{ service_details.state | default('not found') }}
+          ({{ service_details.status | default('n/a') }})
+      vars:
+        service_details: >-
+          {{ service_inventory.get(name, service_inventory.get(name ~ '.service', {})) }}
       when: name is defined
 
     - name: Show all running services
       ansible.builtin.debug:
         msg: >-
-          {{ ansible_facts.services | dict2items
+          {{ service_inventory | dict2items
              | selectattr('value.state', 'equalto', 'running')
              | map(attribute='key') | list }}
       when: name is not defined
